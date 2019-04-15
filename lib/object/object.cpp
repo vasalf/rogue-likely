@@ -14,22 +14,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <rogue_likely.h>
-#include <ui/abstract_ui.h>
-#include <ui/ncurses/ncurses_ui.h>
+#include <object/object.h>
 
 namespace NRogueLikely {
 
-void RunMain() {
-    TWorld world(3, 10, 10);
-    world.SetCell(0, 0, 0, MakeCell(ECellFloor::FLOOR));
-    world.SetCell(0, 0, 1, MakeCell(ECellFloor::FLOOR));
-    world.SetCell(0, 9, 9, MakeCell(ECellFloor::WALL));
-    TObjectPtr person = std::make_shared<TObject>();
-    person->SetPosition({0, 0, 0});
-    TAbstractUIPtr ui = std::make_shared<TNCursesUI>();
-    ui->DrawMap(world, person);
-    ui->AwaitUserAction();
+std::optional<TPosition> TObject::GetPosition() const {
+    return Position_;
+}
+
+void TObject::SetPosition(const TPosition& position) {
+    Position_ = position;
+}
+
+void TObject::SetEmptyPosition() {
+    Position_ = {};
 }
 
 }
+

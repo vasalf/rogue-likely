@@ -14,22 +14,34 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <rogue_likely.h>
-#include <ui/abstract_ui.h>
-#include <ui/ncurses/ncurses_ui.h>
+#include <world/world_view.h>
 
 namespace NRogueLikely {
 
-void RunMain() {
-    TWorld world(3, 10, 10);
-    world.SetCell(0, 0, 0, MakeCell(ECellFloor::FLOOR));
-    world.SetCell(0, 0, 1, MakeCell(ECellFloor::FLOOR));
-    world.SetCell(0, 9, 9, MakeCell(ECellFloor::WALL));
-    TObjectPtr person = std::make_shared<TObject>();
-    person->SetPosition({0, 0, 0});
-    TAbstractUIPtr ui = std::make_shared<TNCursesUI>();
-    ui->DrawMap(world, person);
-    ui->AwaitUserAction();
+TWorldView::TWorldView(int height, int width)
+    : Height_(height)
+    , Width_(width)
+{
+    Cells_.resize(height);
+    for (int i = 0; i < height; i++) {
+        Cells_[i].resize(width);
+    }
+}
+
+int TWorldView::GetHeight() const {
+    return Height_;
+}
+
+int TWorldView::GetWidth() const {
+    return Width_;
+}
+
+void TWorldView::SetCell(int i, int j, TCellPtr cellPtr) {
+    Cells_[i][j] = cellPtr;
+}
+
+TCellPtr TWorldView::GetCell(int i, int j) {
+    return Cells_[i][j];
 }
 
 }

@@ -14,22 +14,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <rogue_likely.h>
-#include <ui/abstract_ui.h>
-#include <ui/ncurses/ncurses_ui.h>
+#include <gtest/gtest.h>
 
-namespace NRogueLikely {
+#include <world/cell.h>
 
-void RunMain() {
-    TWorld world(3, 10, 10);
-    world.SetCell(0, 0, 0, MakeCell(ECellFloor::FLOOR));
-    world.SetCell(0, 0, 1, MakeCell(ECellFloor::FLOOR));
-    world.SetCell(0, 9, 9, MakeCell(ECellFloor::WALL));
-    TObjectPtr person = std::make_shared<TObject>();
-    person->SetPosition({0, 0, 0});
-    TAbstractUIPtr ui = std::make_shared<TNCursesUI>();
-    ui->DrawMap(world, person);
-    ui->AwaitUserAction();
+using namespace NRogueLikely;
+
+namespace {
+
+void DoTestCellType(ECellFloor cellFloor) {
+    ASSERT_EQ(cellFloor, MakeCell(cellFloor)->GetFloorType());
 }
 
+} // namespace <anonymous>
+
+TEST(CellTest, TestEmptyCellFloorType) {
+    DoTestCellType(ECellFloor::EMPTY);
+}
+
+TEST(CellTest, TestPassageCellFloorType) {
+    DoTestCellType(ECellFloor::PASSAGE);
+}
+
+TEST(CellTest, TestWallCellFloorType) {
+    DoTestCellType(ECellFloor::WALL);
+}
+
+TEST(CellTest, TestFloorCellFloorType) {
+    DoTestCellType(ECellFloor::FLOOR);
 }
