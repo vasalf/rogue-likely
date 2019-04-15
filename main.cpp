@@ -1,6 +1,6 @@
-#include <iostream>
+#include <rogue_likely.h>
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    NRogueLikely::RunMain();
     return 0;
 }
