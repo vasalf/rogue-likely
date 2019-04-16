@@ -15,6 +15,7 @@
  */
 
 #include <rogue_likely.h>
+#include <object/alive_object.h>
 #include <ui/abstract_ui.h>
 #include <ui/ncurses/ncurses_ui.h>
 #include <world/world_generator.h>
@@ -23,8 +24,8 @@ namespace NRogueLikely {
 
 void RunMain() {
     TWorld world = std::make_shared<TPlainWorldGenerator>(3, 10, 10)->Generate();
-    TObjectPtr person = std::make_shared<TObject>();
-    person->SetPosition({0, 4, 4});
+    TAliveObjectPtr person = std::make_shared<TAliveObject>(EObjectType::PLAYER, TPosition(0, 4, 4));
+    world.AddObject(person);
     TAbstractUIPtr ui = std::make_shared<TNCursesUI>();
     ui->DrawMap(world, person);
     ui->AwaitUserAction();

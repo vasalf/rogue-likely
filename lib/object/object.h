@@ -24,9 +24,13 @@
 
 namespace NRogueLikely {
 
+enum class EObjectType {
+    PLAYER
+};
+
 class TObject {
 public:
-    TObject() = default;
+    TObject(EObjectType objectType);
 
     TObject(const TObject&) = delete;
     TObject& operator=(const TObject&) = delete;
@@ -35,9 +39,12 @@ public:
 
     std::optional<TPosition> GetPosition() const;
     void SetPosition(const TPosition& position);
-    void SetEmptyPosition();
+    virtual void SetEmptyPosition();
+
+    EObjectType GetObjectType() const;
 
 private:
+    EObjectType ObjectType_;
     std::optional<TPosition> Position_;
 };
 

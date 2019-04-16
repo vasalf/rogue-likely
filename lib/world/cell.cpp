@@ -16,6 +16,8 @@
 
 #include <world/cell.h>
 
+#include <algorithm>
+
 namespace NRogueLikely {
 namespace {
 
@@ -26,6 +28,10 @@ public:
     ECellFloor GetFloorType() override {
         return ECellFloor::EMPTY;
     }
+
+    bool CanMoveHere() const override {
+        return false;
+    }
 };
 
 class TFloorCell final : public TCellBase {
@@ -34,6 +40,10 @@ public:
 
     ECellFloor GetFloorType() override {
         return ECellFloor::FLOOR;
+    }
+
+    bool CanMoveHere() const override {
+        return true;
     }
 };
 
@@ -44,6 +54,10 @@ public:
     ECellFloor GetFloorType() override {
         return ECellFloor::PASSAGE;
     }
+
+    bool CanMoveHere() const override {
+        return true;
+    }
 };
 
 class TWallCell final : public TCellBase {
@@ -53,9 +67,25 @@ public:
     ECellFloor GetFloorType() override {
         return ECellFloor::WALL;
     }
+
+    bool CanMoveHere() const override {
+        return false;
+    }
 };
 
 } // namespace <anonymous>
+
+void TCellBase::AddObject(TObjectPtr object) {
+    ObjectsHere_.push_back(object);
+}
+
+void TCellBase::RemoveObject(TObjectPtr object) {
+    ObjectsHere_.erase(std::find(ObjectsHere_.begin(), ObjectsHere_.end(), object));
+}
+
+const std::vector<TObjectPtr>& TCellBase::GetObjectsHere() const {
+    return ObjectsHere_;
+}
 
 TCellPtr MakeCell(ECellFloor cellFloor) {
     switch (cellFloor) {

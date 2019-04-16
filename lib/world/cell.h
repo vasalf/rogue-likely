@@ -16,7 +16,10 @@
 
 #pragma once
 
+#include <object/object_fwd.h>
+
 #include <memory>
+#include <vector>
 
 namespace NRogueLikely {
 
@@ -37,6 +40,13 @@ public:
     TCellBase& operator=(TCellBase&&) noexcept = default;
 
     virtual ECellFloor GetFloorType() = 0;
+    virtual bool CanMoveHere() const = 0;
+
+    void AddObject(TObjectPtr object);
+    void RemoveObject(TObjectPtr object);
+    const std::vector<TObjectPtr>& GetObjectsHere() const;
+private:
+    std::vector<TObjectPtr> ObjectsHere_;
 };
 
 using TCellPtr = std::shared_ptr<TCellBase>;

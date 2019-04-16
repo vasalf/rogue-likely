@@ -25,20 +25,34 @@ namespace NRogueLikely {
 
 class TNCursesUI::TImpl {
 private:
-    void DrawCellAt(int y, int x, TCellPtr cell) {
+    char GetCellFloorChar(const TCellPtr& cell) {
         switch(cell->GetFloorType()) {
             case ECellFloor::EMPTY:
-                mvaddch(y, x, ' ');
-                break;
+                return ' ';
             case ECellFloor::FLOOR:
-                mvaddch(y, x, '.');
-                break;
+                return '.';
             case ECellFloor::WALL:
-                mvaddch(y, x, '#');
-                break;
+                return '#';
             case ECellFloor::PASSAGE:
-                mvaddch(y, x, '.');
-                break;
+                return '.';
+        }
+    }
+
+    std::optional<char> GetCellObjectChar(const TCellPtr& cell) {
+        for (const auto& objPtr : cell->GetObjectsHere()) {
+            if (objPtr->GetObjectType() == EObjectType::PLAYER) {
+                return '@';
+            }
+        }
+        return {};
+    }
+
+    void DrawCellAt(int y, int x, const TCellPtr& cell) {
+        auto objectChar = GetCellObjectChar(cell);
+        if (objectChar.has_value()) {
+            mvaddch(y, x, objectChar.value());
+        } else {
+            mvaddch(y, x, GetCellFloorChar(cell));
         }
     }
 
@@ -60,7 +74,7 @@ public:
         endwin();
     }
 
-    void DrawMap(const TWorld& world, TObjectPtr objectPtr) {
+    void DrawMap(const TWorld& world, const TObjectPtr& objectPtr) {
         TWorldView view = world.GetViewOf(objectPtr);
         for (int i = 0; i < view.GetHeight(); i++) {
             for (int j = 0; j < view.GetWidth(); j++) {

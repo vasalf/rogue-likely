@@ -14,30 +14,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <object/object.h>
-#include <world/world.h>
+#include <object/alive_object.h>
 
 namespace NRogueLikely {
 
-TObject::TObject(EObjectType objectType)
-    : ObjectType_(objectType)
-{ }
+TAliveObjectEmptyPosition::TAliveObjectEmptyPosition()
+    : std::runtime_error("Attempt to set empty position to an alive object")
+{}
 
-std::optional<TPosition> TObject::GetPosition() const {
-    return Position_;
+TAliveObject::TAliveObject(EObjectType objectType, TPosition position)
+    : TObject(objectType)
+{
+    SetPosition(position);
 }
 
-void TObject::SetPosition(const TPosition& position) {
-    Position_ = position;
+void TAliveObject::SetEmptyPosition() {
+    throw TAliveObjectEmptyPosition();
 }
 
-void TObject::SetEmptyPosition() {
-    Position_ = {};
-}
-
-EObjectType TObject::GetObjectType() const {
-    return ObjectType_;
+TPosition TAliveObject::GetPositionSafe() const {
+    return TObject::GetPosition().value();
 }
 
 }
-

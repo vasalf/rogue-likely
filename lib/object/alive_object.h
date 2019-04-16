@@ -14,30 +14,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#pragma once
+
 #include <object/object.h>
-#include <world/world.h>
+
+#include <stdexcept>
 
 namespace NRogueLikely {
 
-TObject::TObject(EObjectType objectType)
-    : ObjectType_(objectType)
-{ }
+class TAliveObjectEmptyPosition : public std::runtime_error {
+public:
+    TAliveObjectEmptyPosition();
+};
 
-std::optional<TPosition> TObject::GetPosition() const {
-    return Position_;
-}
+class TAliveObject : public TObject {
+public:
+    TAliveObject(EObjectType objectType, TPosition position);
 
-void TObject::SetPosition(const TPosition& position) {
-    Position_ = position;
-}
+    void SetEmptyPosition() override final;
+    TPosition GetPositionSafe() const;
+};
 
-void TObject::SetEmptyPosition() {
-    Position_ = {};
-}
-
-EObjectType TObject::GetObjectType() const {
-    return ObjectType_;
-}
+using TAliveObjectPtr = std::shared_ptr<TAliveObject>;
 
 }
 

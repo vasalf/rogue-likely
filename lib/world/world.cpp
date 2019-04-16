@@ -76,6 +76,13 @@ TWorldView TWorld::GetViewOf(TObjectPtr objectPtr) const {
     return ret;
 }
 
+void TWorld::AddObject(const TObjectPtr& object) {
+    auto position = object->GetPosition();
+    if (position.has_value()) {
+        GetCell(position.value())->AddObject(object);
+    }
+}
+
 TPosition::TPosition(int level, int i, int j)
     : level(level)
     , i(i)

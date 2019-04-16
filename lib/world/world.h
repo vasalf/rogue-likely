@@ -52,6 +52,7 @@ public:
 
     TWorldView GetViewOf(TObjectPtr object) const;
 
+    void AddObject(const TObjectPtr& object);
 private:
     int Levels_;
     int Height_;
