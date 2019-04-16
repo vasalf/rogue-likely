@@ -51,7 +51,7 @@ public:
     }
 
     bool CanMoveFromHere(TPosition here, TPosition where) const override {
-        return true;
+        return here.Level == where.Level;
     }
 };
 
@@ -68,7 +68,7 @@ public:
     }
 
     bool CanMoveFromHere(TPosition here, TPosition where) const override {
-        return true;
+        return here.Level == where.Level;
     }
 };
 
@@ -87,6 +87,42 @@ public:
     bool CanMoveFromHere(TPosition here, TPosition where) const override {
         return false;
     }
+};
+
+class TLadderCell final : public TCellBase {
+public:
+    enum class ELadderType {
+        UP,
+        DOWN
+    };
+
+    TLadderCell(ELadderType ladderType)
+        : LadderType_(ladderType)
+    {}
+
+    ECellFloor GetFloorType() override {
+        if (LadderType_ == ELadderType::UP) {
+            return ECellFloor::LADDER_UP;
+        } else {
+            return ECellFloor::LADDER_DOWN;
+        }
+    }
+
+    bool CanMoveHere() const override {
+        return true;
+    }
+
+    bool CanMoveFromHere(TPosition here, TPosition where) const override {
+        if (here.Level == where.Level) {
+            return true;
+        }
+        return here.Level == where.Level + (LadderType_ == ELadderType::UP ? -1 : 1)
+               && here.I == where.I
+               && here.J == where.J;
+    }
+
+private:
+    ELadderType LadderType_;
 };
 
 } // namespace <anonymous>
@@ -113,6 +149,10 @@ TCellPtr MakeCell(ECellFloor cellFloor) {
             return std::make_shared<TWallCell>();
         case ECellFloor::PASSAGE:
             return std::make_shared<TPassageCell>();
+        case ECellFloor::LADDER_UP:
+            return std::make_shared<TLadderCell>(TLadderCell::ELadderType::UP);
+        case ECellFloor::LADDER_DOWN:
+            return std::make_shared<TLadderCell>(TLadderCell::ELadderType::DOWN);
     }
 }
 

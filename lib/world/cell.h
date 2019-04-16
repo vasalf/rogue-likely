@@ -29,6 +29,8 @@ enum class ECellFloor {
     FLOOR,
     PASSAGE,
     WALL,
+    LADDER_UP,
+    LADDER_DOWN
 };
 
 class TCellBase {

@@ -38,6 +38,12 @@ TWorld TPlainWorldGenerator::Generate() {
             }
             ret.SetCell(i, j, Width_ - 1, MakeCell(ECellFloor::WALL));
         }
+        if (i > 0) {
+            ret.SetCell(i, 1, 1, MakeCell(ECellFloor::LADDER_DOWN));
+        }
+        if (i < Levels_ - 1) {
+            ret.SetCell(i, 1, 2, MakeCell(ECellFloor::LADDER_UP));
+        }
     }
     return ret;
 }

@@ -83,7 +83,20 @@ void TWorld::AddObject(const TObjectPtr& object) {
     }
 }
 
+namespace {
+
+bool CheckPositionBounds(TPosition position, int levels, int height, int width) {
+    return 0 <= position.Level && position.Level < levels
+            && 0 <= position.I && position.I < height
+            && 0 <= position.J && position.J < width;
+}
+
+}
+
 bool TWorld::TryToMoveObject(const TObjectPtr& object, TPosition newPosition) {
+    if (!CheckPositionBounds(newPosition, Levels_, Height_, Width_)) {
+        return false;
+    }
     if (GetCell(newPosition)->CanMoveHere()) {
         auto oldPosition = object->GetPosition();
         if (oldPosition.has_value()) {

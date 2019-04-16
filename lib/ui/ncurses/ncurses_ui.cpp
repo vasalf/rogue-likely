@@ -31,7 +31,9 @@ public:
         LEFT,
         RIGHT,
         UP,
-        DOWN
+        DOWN,
+        LEVEL_UP,
+        LEVEL_DOWN
     };
 
     TMoveAction(EMoveDirection direction)
@@ -52,6 +54,12 @@ public:
                 break;
             case EMoveDirection::DOWN:
                 newPosition.I++;
+                break;
+            case EMoveDirection::LEVEL_UP:
+                newPosition.Level--;
+                break;
+            case EMoveDirection::LEVEL_DOWN:
+                newPosition.Level++;
                 break;
         }
         return world.TryToMoveObject(object, newPosition);
@@ -75,6 +83,10 @@ private:
                 return '#';
             case ECellFloor::PASSAGE:
                 return '.';
+            case ECellFloor::LADDER_UP:
+                return '>';
+            case ECellFloor::LADDER_DOWN:
+                return '<';
         }
     }
 
@@ -136,6 +148,10 @@ public:
                     return std::make_shared<TMoveAction>(TMoveAction::EMoveDirection::UP);
                 case KEY_DOWN:
                     return std::make_shared<TMoveAction>(TMoveAction::EMoveDirection::DOWN);
+                case '>':
+                    return std::make_shared<TMoveAction>(TMoveAction::EMoveDirection::LEVEL_DOWN);
+                case '<':
+                    return std::make_shared<TMoveAction>(TMoveAction::EMoveDirection::LEVEL_UP);
             }
         }
     }
