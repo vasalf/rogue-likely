@@ -29,12 +29,16 @@ private:
         switch(cell->GetFloorType()) {
             case ECellFloor::EMPTY:
                 mvaddch(y, x, ' ');
+                break;
             case ECellFloor::FLOOR:
                 mvaddch(y, x, '.');
+                break;
             case ECellFloor::WALL:
                 mvaddch(y, x, '#');
+                break;
             case ECellFloor::PASSAGE:
                 mvaddch(y, x, '.');
+                break;
         }
     }
 

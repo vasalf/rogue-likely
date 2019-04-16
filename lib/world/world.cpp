@@ -16,6 +16,7 @@
 
 #include <world/world.h>
 #include <object/object.h>
+#include <utility>
 
 namespace NRogueLikely {
 
@@ -27,7 +28,7 @@ TWorld::TWorld(int levels, int height, int width)
     World_.resize(levels);
     for (int i = 0; i < levels; i++) {
         World_[i].resize(height);
-        for (int j = 0; j < levels; j++) {
+        for (int j = 0; j < height; j++) {
             World_[i][j].resize(width);
             for (int k = 0; k < width; k++) {
                 World_[i][j][k] = MakeCell(ECellFloor::EMPTY);
@@ -37,7 +38,7 @@ TWorld::TWorld(int levels, int height, int width)
 }
 
 void TWorld::SetCell(int level, int i, int j, TCellPtr cellPtr)  {
-    World_[level][i][j] = cellPtr;
+    World_[level][i][j] = std::move(cellPtr);
 }
 
 void TWorld::SetCell(const TPosition& position, TCellPtr cellPtr) {
