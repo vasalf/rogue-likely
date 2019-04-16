@@ -16,6 +16,7 @@
 
 #include <object/object_fwd.h>
 #include <world/cell.h>
+#include <world/position.h>
 #include <world/world_view.h>
 
 #include <vector>
@@ -23,14 +24,6 @@
 #pragma once
 
 namespace NRogueLikely {
-
-struct TPosition {
-    int level;
-    int i;
-    int j;
-
-    TPosition(int level, int i, int j);
-};
 
 class TWorld {
 public:
@@ -53,6 +46,7 @@ public:
     TWorldView GetViewOf(TObjectPtr object) const;
 
     void AddObject(const TObjectPtr& object);
+    bool TryToMoveObject(const TObjectPtr& object, TPosition newPosition);
 private:
     int Levels_;
     int Height_;

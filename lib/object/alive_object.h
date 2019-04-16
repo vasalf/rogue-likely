@@ -35,7 +35,5 @@ public:
     TPosition GetPositionSafe() const;
 };
 
-using TAliveObjectPtr = std::shared_ptr<TAliveObject>;
-
 }
 

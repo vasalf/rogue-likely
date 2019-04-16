@@ -17,6 +17,7 @@
 #pragma once
 
 #include <object/object_fwd.h>
+#include <world/position.h>
 
 #include <memory>
 #include <vector>
@@ -41,6 +42,7 @@ public:
 
     virtual ECellFloor GetFloorType() = 0;
     virtual bool CanMoveHere() const = 0;
+    virtual bool CanMoveFromHere(TPosition here, TPosition where) const = 0;
 
     void AddObject(TObjectPtr object);
     void RemoveObject(TObjectPtr object);

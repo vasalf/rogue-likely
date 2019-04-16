@@ -30,7 +30,7 @@ public:
     IUserAction(IUserAction&&) noexcept = default;
     IUserAction& operator=(IUserAction&&) noexcept = default;
 
-    virtual void perform(const TWorld& world, TObjectPtr object) = 0;
+    virtual bool Perform(TWorld& world, TAliveObjectPtr object) = 0;
 };
 
 using TUserActionPtr = std::shared_ptr<IUserAction>;

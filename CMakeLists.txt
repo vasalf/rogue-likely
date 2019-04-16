@@ -9,17 +9,18 @@ include_directories(${CURSES_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/lib)
 
 add_library(rogue_likely_lib STATIC
+    lib/object/alive_object.cpp
     lib/object/object.cpp
     lib/object/object_fwd.cpp
     lib/ui/abstract_ui.cpp
+    lib/ui/ncurses/ncurses_ui.cpp
     lib/ui/user_action.cpp
     lib/world/cell.cpp
     lib/world/world.cpp
-    lib/world/world_view.cpp
-    lib/rogue_likely.cpp
-    lib/ui/ncurses/ncurses_ui.cpp
     lib/world/world_generator.cpp
-    lib/object/alive_object.cpp
+    lib/world/world_view.cpp
+    lib/world/position.cpp
+    lib/rogue_likely.cpp
 )
 target_link_libraries(rogue_likely_lib LINK_PUBLIC ${CURSES_LIBRARIES})
 

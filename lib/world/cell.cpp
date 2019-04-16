@@ -32,6 +32,10 @@ public:
     bool CanMoveHere() const override {
         return false;
     }
+
+    bool CanMoveFromHere(TPosition here, TPosition where) const override {
+        return false;
+    }
 };
 
 class TFloorCell final : public TCellBase {
@@ -43,6 +47,10 @@ public:
     }
 
     bool CanMoveHere() const override {
+        return true;
+    }
+
+    bool CanMoveFromHere(TPosition here, TPosition where) const override {
         return true;
     }
 };
@@ -58,6 +66,10 @@ public:
     bool CanMoveHere() const override {
         return true;
     }
+
+    bool CanMoveFromHere(TPosition here, TPosition where) const override {
+        return true;
+    }
 };
 
 class TWallCell final : public TCellBase {
@@ -69,6 +81,10 @@ public:
     }
 
     bool CanMoveHere() const override {
+        return false;
+    }
+
+    bool CanMoveFromHere(TPosition here, TPosition where) const override {
         return false;
     }
 };

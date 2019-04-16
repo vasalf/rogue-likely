@@ -22,5 +22,7 @@ namespace NRogueLikely {
 
 class TObject;
 using TObjectPtr = std::shared_ptr<TObject>;
+class TAliveObject;
+using TAliveObjectPtr = std::shared_ptr<TAliveObject>;
 
 }

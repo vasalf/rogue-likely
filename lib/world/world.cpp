@@ -42,7 +42,7 @@ void TWorld::SetCell(int level, int i, int j, TCellPtr cellPtr)  {
 }
 
 void TWorld::SetCell(const TPosition& position, TCellPtr cellPtr) {
-    SetCell(position.level, position.i, position.j, std::move(cellPtr));
+    SetCell(position.Level, position.I, position.J, std::move(cellPtr));
 }
 
 TCellPtr TWorld::GetCell(int level, int i, int j) {
@@ -50,7 +50,7 @@ TCellPtr TWorld::GetCell(int level, int i, int j) {
 }
 
 TCellPtr TWorld::GetCell(const TPosition& position) {
-    return GetCell(position.level, position.i, position.j);
+    return GetCell(position.Level, position.I, position.J);
 }
 
 int TWorld::GetLevelsCount() const {
@@ -66,7 +66,7 @@ int TWorld::GetLevelWidth() const {
 }
 
 TWorldView TWorld::GetViewOf(TObjectPtr objectPtr) const {
-    int level = objectPtr->GetPosition().value().level;
+    int level = objectPtr->GetPosition().value().Level;
     TWorldView ret(Height_, Width_);
     for (int i = 0; i < Height_; i++) {
         for (int j = 0; j < Width_; j++) {
@@ -83,10 +83,20 @@ void TWorld::AddObject(const TObjectPtr& object) {
     }
 }
 
-TPosition::TPosition(int level, int i, int j)
-    : level(level)
-    , i(i)
-    , j(j)
-{ }
+bool TWorld::TryToMoveObject(const TObjectPtr& object, TPosition newPosition) {
+    if (GetCell(newPosition)->CanMoveHere()) {
+        auto oldPosition = object->GetPosition();
+        if (oldPosition.has_value()) {
+            if (!GetCell(oldPosition.value())->CanMoveFromHere(oldPosition.value(), newPosition)) {
+                return false;
+            }
+            GetCell(oldPosition.value())->RemoveObject(object);
+        }
+        GetCell(newPosition)->AddObject(object);
+        object->SetPosition(newPosition);
+        return true;
+    }
+    return false;
+}
 
 }

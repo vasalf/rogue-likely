@@ -16,12 +16,52 @@
 
 #include <ui/ncurses/ncurses_ui.h>
 
+#include <object/alive_object.h>
 #include <object/object.h>
 #include <world/world_view.h>
 
 #include <ncurses.h>
 
 namespace NRogueLikely {
+namespace {
+
+class TMoveAction final : public IUserAction {
+public:
+    enum class EMoveDirection {
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN
+    };
+
+    TMoveAction(EMoveDirection direction)
+        : Direction_(direction)
+    { }
+
+    bool Perform(TWorld& world, TAliveObjectPtr object) override {
+        TPosition newPosition = object->GetPositionSafe();
+        switch(Direction_) {
+            case EMoveDirection::LEFT:
+                newPosition.J--;
+                break;
+            case EMoveDirection::RIGHT:
+                newPosition.J++;
+                break;
+            case EMoveDirection::UP:
+                newPosition.I--;
+                break;
+            case EMoveDirection::DOWN:
+                newPosition.I++;
+                break;
+        }
+        return world.TryToMoveObject(object, newPosition);
+    }
+
+private:
+    EMoveDirection Direction_;
+};
+
+}
 
 class TNCursesUI::TImpl {
 private:
@@ -64,7 +104,7 @@ public:
         // them, raw() should be used.
         cbreak();
         // Disable echoing of user characters.
-        echo();
+        noecho();
         // Enable arrows for the main screen.
         keypad(stdscr, TRUE);
     }
@@ -83,6 +123,22 @@ public:
         }
         refresh();
     }
+
+    TUserActionPtr AwaitUserAction() {
+        while (true) {
+            int ch = getch();
+            switch(ch) {
+                case KEY_LEFT:
+                    return std::make_shared<TMoveAction>(TMoveAction::EMoveDirection::LEFT);
+                case KEY_RIGHT:
+                    return std::make_shared<TMoveAction>(TMoveAction::EMoveDirection::RIGHT);
+                case KEY_UP:
+                    return std::make_shared<TMoveAction>(TMoveAction::EMoveDirection::UP);
+                case KEY_DOWN:
+                    return std::make_shared<TMoveAction>(TMoveAction::EMoveDirection::DOWN);
+            }
+        }
+    }
 };
 
 TNCursesUI::TNCursesUI()
@@ -96,8 +152,7 @@ void TNCursesUI::DrawMap(const TWorld& world, TObjectPtr objectPtr) {
 }
 
 TUserActionPtr TNCursesUI::AwaitUserAction() {
-    getch();
-    return nullptr;
+    return impl_->AwaitUserAction();
 }
 
 }

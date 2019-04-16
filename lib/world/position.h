@@ -14,24 +14,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <rogue_likely.h>
-#include <object/alive_object.h>
-#include <ui/abstract_ui.h>
-#include <ui/ncurses/ncurses_ui.h>
-#include <world/world_generator.h>
+#pragma once
 
 namespace NRogueLikely {
 
-void RunMain() {
-    TWorld world = std::make_shared<TPlainWorldGenerator>(3, 10, 10)->Generate();
-    TAliveObjectPtr person = std::make_shared<TAliveObject>(EObjectType::PLAYER, TPosition(0, 4, 4));
-    world.AddObject(person);
-    TAbstractUIPtr ui = std::make_shared<TNCursesUI>();
-    while (true) {
-        ui->DrawMap(world, person);
-        auto action = ui->AwaitUserAction();
-        action->Perform(world, person);
-    }
-}
+struct TPosition {
+    int Level;
+    int I;
+    int J;
+
+    TPosition(int level, int i, int j);
+};
 
 }
