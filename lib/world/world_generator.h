@@ -48,4 +48,14 @@ private:
     int Width_;
 };
 
+class TLoadWorldGenerator final : public IWorldGenerator {
+public:
+    TLoadWorldGenerator(const std::string& filename);
+
+    TWorld Generate() override;
+
+private:
+    std::string Filename_;
+};
+
 }

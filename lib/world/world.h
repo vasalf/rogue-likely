@@ -19,6 +19,7 @@
 #include <world/position.h>
 #include <world/world_view.h>
 
+#include <string>
 #include <vector>
 
 #pragma once
@@ -30,23 +31,35 @@ public:
     TWorld(int levels, int height, int width);
 
     TWorld(const TWorld&) = delete;
+
     TWorld& operator=(const TWorld&) = delete;
+
     TWorld(TWorld&&) noexcept = default;
+
     TWorld& operator=(TWorld&&) noexcept = default;
 
     void SetCell(int level, int i, int j, TCellPtr cellPtr);
+
     void SetCell(const TPosition& position, TCellPtr cellPtr);
+
     TCellPtr GetCell(int level, int i, int j);
+
     TCellPtr GetCell(const TPosition& position);
 
     int GetLevelsCount() const;
+
     int GetLevelHeight() const;
+
     int GetLevelWidth() const;
 
     TWorldView GetViewOf(TObjectPtr object) const;
 
+    void SaveToFile(const std::string& filename);
+
     void AddObject(const TObjectPtr& object);
+
     bool TryToMoveObject(const TObjectPtr& object, TPosition newPosition);
+
 private:
     int Levels_;
     int Height_;

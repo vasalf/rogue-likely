@@ -16,6 +16,8 @@
 
 #include <world/world.h>
 #include <object/object.h>
+
+#include <fstream>
 #include <utility>
 
 namespace NRogueLikely {
@@ -74,6 +76,18 @@ TWorldView TWorld::GetViewOf(TObjectPtr objectPtr) const {
         }
     }
     return ret;
+}
+
+void TWorld::SaveToFile(const std::string& filename) {
+    std::ofstream file(filename);
+    file << Levels_ << " " << Height_ << " " << Width_ << std::endl;
+    for (int i = 0; i < Levels_; i++) {
+        for (int j = 0; j < Height_; j++) {
+            for (int k = 0; k < Width_; k++) {
+                file << (int)GetCell(i, j, k)->GetFloorType() << " ";
+            }
+        }
+    }
 }
 
 void TWorld::AddObject(const TObjectPtr& object) {

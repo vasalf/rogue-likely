@@ -16,6 +16,8 @@
 
 #include <world/world_generator.h>
 
+#include <fstream>
+
 namespace NRogueLikely {
 
 TPlainWorldGenerator::TPlainWorldGenerator(int levels, int height, int width)
@@ -46,6 +48,28 @@ TWorld TPlainWorldGenerator::Generate() {
         }
     }
     return ret;
+}
+
+TLoadWorldGenerator::TLoadWorldGenerator(const std::string& filename)
+    : Filename_(filename)
+{ }
+
+TWorld TLoadWorldGenerator::Generate() {
+    std::ifstream file(Filename_);
+    int levels, height, width;
+    file >> levels >> height >> width;
+    TWorld world(levels, height, width);
+    for (int i = 0; i < levels; i++) {
+        for (int j = 0; j < height; j++) {
+            for (int k = 0; k < width; k++) {
+                int x;
+                file >> x;
+                auto floor = (ECellFloor)x;
+                world.SetCell(i, j, k, MakeCell(floor));
+            }
+        }
+    }
+    return world;
 }
 
 }
