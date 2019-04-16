@@ -69,6 +69,21 @@ private:
     EMoveDirection Direction_;
 };
 
+class TSaveMapAction final : public IUserAction {
+public:
+    TSaveMapAction(const std::string& filename)
+        : Filename_(filename)
+    { }
+
+    bool Perform(TWorld& world, TAliveObjectPtr) override {
+        world.SaveToFile(Filename_);
+        return false;
+    }
+
+public:
+    std::string Filename_;
+};
+
 }
 
 class TNCursesUI::TImpl {
@@ -133,7 +148,16 @@ public:
                 DrawCellAt(i, j, view.GetCell(i, j));
             }
         }
+        InputLine_ = view.GetHeight() + 1;
         refresh();
+    }
+
+    std::string AwaitUserInput() {
+        echo();
+        char buf[100];
+        mvscanw(InputLine_, 0, "%s", buf);
+        noecho();
+        return buf;
     }
 
     TUserActionPtr AwaitUserAction() {
@@ -152,9 +176,14 @@ public:
                     return std::make_shared<TMoveAction>(TMoveAction::EMoveDirection::LEVEL_DOWN);
                 case '<':
                     return std::make_shared<TMoveAction>(TMoveAction::EMoveDirection::LEVEL_UP);
+                case 's':
+                    return std::make_shared<TSaveMapAction>(AwaitUserInput());
             }
         }
     }
+
+private:
+    int InputLine_;
 };
 
 TNCursesUI::TNCursesUI()

@@ -20,10 +20,24 @@
 #include <ui/ncurses/ncurses_ui.h>
 #include <world/world_generator.h>
 
+#include <CLI/CLI11.hpp>
+
 namespace NRogueLikely {
 
-void RunMain() {
-    TWorld world = std::make_shared<TPlainWorldGenerator>(3, 10, 10)->Generate();
+int RunMain(int argc, char* argv[]) {
+    std::string mapFilename;
+    CLI::App app;
+    app.add_option("-l,--load-map", mapFilename, "Load map from file");
+    CLI11_PARSE(app, argc, argv);
+
+    TWorldGeneratorPtr worldGenerator;
+    if (mapFilename.empty()) {
+        worldGenerator = std::make_shared<TPlainWorldGenerator>(3, 10, 10);
+    } else {
+        worldGenerator = std::make_shared<TLoadWorldGenerator>(mapFilename);
+    }
+
+    TWorld world = worldGenerator->Generate();
     TAliveObjectPtr person = std::make_shared<TAliveObject>(EObjectType::PLAYER, TPosition(0, 4, 4));
     world.AddObject(person);
     TAbstractUIPtr ui = std::make_shared<TNCursesUI>();

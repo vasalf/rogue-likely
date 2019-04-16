@@ -7,6 +7,7 @@ include(FindCurses)
 include_directories(${CURSES_INCLUDE_DIRS})
 
 include_directories(${PROJECT_SOURCE_DIR}/lib)
+include_directories(${PROJECT_SOURCE_DIR}/third_party/CLI11-release-1.7.1)
 
 add_library(rogue_likely_lib STATIC
     lib/object/alive_object.cpp

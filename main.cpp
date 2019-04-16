@@ -1,6 +1,6 @@
 #include <rogue_likely.h>
 
-int main() {
-    NRogueLikely::RunMain();
-    return 0;
+int main(int argc, char *argv[]) {
+    int ret = NRogueLikely::RunMain(argc, argv);
+    return ret;
 }

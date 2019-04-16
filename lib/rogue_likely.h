@@ -18,6 +18,6 @@
 
 namespace NRogueLikely {
 
-void RunMain();
+int RunMain(int argc, char* argv[]);
 
 }
