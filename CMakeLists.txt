@@ -18,6 +18,7 @@ add_library(rogue_likely_lib STATIC
     lib/world/world_view.cpp
     lib/rogue_likely.cpp
     lib/ui/ncurses/ncurses_ui.cpp
+    lib/world/world_generator.cpp
 )
 target_link_libraries(rogue_likely_lib LINK_PUBLIC ${CURSES_LIBRARIES})
 

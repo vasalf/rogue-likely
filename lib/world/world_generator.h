@@ -14,20 +14,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <rogue_likely.h>
-#include <ui/abstract_ui.h>
-#include <ui/ncurses/ncurses_ui.h>
-#include <world/world_generator.h>
+#pragma once
+
+#include <world/world.h>
+
+#include <memory>
 
 namespace NRogueLikely {
 
-void RunMain() {
-    TWorld world = std::make_shared<TPlainWorldGenerator>(3, 10, 10)->Generate();
-    TObjectPtr person = std::make_shared<TObject>();
-    person->SetPosition({0, 4, 4});
-    TAbstractUIPtr ui = std::make_shared<TNCursesUI>();
-    ui->DrawMap(world, person);
-    ui->AwaitUserAction();
-}
+class IWorldGenerator {
+public:
+    IWorldGenerator() = default;
+
+    IWorldGenerator(const IWorldGenerator&) = delete;
+    IWorldGenerator& operator=(const IWorldGenerator&) = delete;
+    IWorldGenerator(IWorldGenerator&&) noexcept = default;
+    IWorldGenerator& operator=(IWorldGenerator&&) noexcept = default;
+
+    virtual TWorld Generate() = 0;
+};
+
+using TWorldGeneratorPtr = std::shared_ptr<IWorldGenerator>;
+
+class TPlainWorldGenerator : public IWorldGenerator {
+public:
+    TPlainWorldGenerator(int levels, int height, int width);
+
+    virtual TWorld Generate() override;
+
+private:
+    int Levels_;
+    int Height_;
+    int Width_;
+};
 
 }
