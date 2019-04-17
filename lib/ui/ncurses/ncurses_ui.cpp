@@ -16,6 +16,7 @@
 
 #include <ui/ncurses/ncurses_ui.h>
 
+#include <controller/controller.h>
 #include <object/alive_object.h>
 #include <object/object.h>
 #include <world/world_view.h>
@@ -82,6 +83,15 @@ public:
 
 public:
     std::string Filename_;
+};
+
+class TExitGameAction final : public IUserAction {
+public:
+    TExitGameAction() = default;
+
+    bool Perform(TWorld&, TAliveObjectPtr) override {
+        throw TExitGameException();
+    }
 };
 
 }
@@ -178,6 +188,8 @@ public:
                     return std::make_shared<TMoveAction>(TMoveAction::EMoveDirection::LEVEL_UP);
                 case 's':
                     return std::make_shared<TSaveMapAction>(AwaitUserInput());
+                case 'q':
+                    return std::make_shared<TExitGameAction>();
             }
         }
     }

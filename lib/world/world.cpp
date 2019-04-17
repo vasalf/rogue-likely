@@ -81,6 +81,7 @@ TWorldView TWorld::GetViewOf(TObjectPtr objectPtr) const {
 void TWorld::SaveToFile(const std::string& filename) {
     std::ofstream file(filename);
     file << Levels_ << " " << Height_ << " " << Width_ << std::endl;
+    file << StartPosition_.Level << " " << StartPosition_.I << " " << StartPosition_.J << std::endl;
     for (int i = 0; i < Levels_; i++) {
         for (int j = 0; j < Height_; j++) {
             for (int k = 0; k < Width_; k++) {
@@ -124,6 +125,14 @@ bool TWorld::TryToMoveObject(const TObjectPtr& object, TPosition newPosition) {
         return true;
     }
     return false;
+}
+
+void TWorld::SetStartPosition(TPosition position) {
+    StartPosition_ = position;
+}
+
+TPosition TWorld::GetStartPosition() const {
+    return StartPosition_;
 }
 
 }

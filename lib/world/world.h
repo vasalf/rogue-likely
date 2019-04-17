@@ -31,25 +31,18 @@ public:
     TWorld(int levels, int height, int width);
 
     TWorld(const TWorld&) = delete;
-
     TWorld& operator=(const TWorld&) = delete;
-
     TWorld(TWorld&&) noexcept = default;
-
     TWorld& operator=(TWorld&&) noexcept = default;
 
     void SetCell(int level, int i, int j, TCellPtr cellPtr);
-
     void SetCell(const TPosition& position, TCellPtr cellPtr);
 
     TCellPtr GetCell(int level, int i, int j);
-
     TCellPtr GetCell(const TPosition& position);
 
     int GetLevelsCount() const;
-
     int GetLevelHeight() const;
-
     int GetLevelWidth() const;
 
     TWorldView GetViewOf(TObjectPtr object) const;
@@ -60,10 +53,15 @@ public:
 
     bool TryToMoveObject(const TObjectPtr& object, TPosition newPosition);
 
+    void SetStartPosition(TPosition position);
+    TPosition GetStartPosition() const;
+
 private:
     int Levels_;
     int Height_;
     int Width_;
+
+    TPosition StartPosition_;
 
     using TLevel = std::vector<std::vector<TCellPtr>>;
     std::vector<TLevel> World_;

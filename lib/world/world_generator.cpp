@@ -47,6 +47,7 @@ TWorld TPlainWorldGenerator::Generate() {
             ret.SetCell(i, 1, 2, MakeCell(ECellFloor::LADDER_UP));
         }
     }
+    ret.SetStartPosition(TPosition(0, Height_ / 2, Width_ / 2));
     return ret;
 }
 
@@ -58,7 +59,10 @@ TWorld TLoadWorldGenerator::Generate() {
     std::ifstream file(Filename_);
     int levels, height, width;
     file >> levels >> height >> width;
+    TPosition startPosition;
+    file >> startPosition.Level >> startPosition.I >> startPosition.J;
     TWorld world(levels, height, width);
+    world.SetStartPosition(startPosition);
     for (int i = 0; i < levels; i++) {
         for (int j = 0; j < height; j++) {
             for (int k = 0; k < width; k++) {

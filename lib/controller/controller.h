@@ -16,15 +16,37 @@
 
 #pragma once
 
+#include <world/world.h>
+#include <object/alive_object.h>
+
+#include <optional>
+#include <string>
+
 namespace NRogueLikely {
 
-struct TPosition {
-    int Level;
-    int I;
-    int J;
+class TExitGameException : public std::exception {};
 
-    TPosition() = default;
-    TPosition(int level, int i, int j);
+struct TGameOpts {
+    int Levels = 0;
+    int Height = 0;
+    int Width = 0;
+    std::optional<std::string> MapLoadPath;
+};
+
+class TController {
+public:
+    TController(const TGameOpts& opts);
+
+    TController(const TController&) = delete;
+    TController& operator=(const TController&) = delete;
+    TController(TController&&) noexcept = default;
+    TController& operator=(TController&&) noexcept = default;
+
+    void MainLoop();
+
+private:
+    TWorld world;
+    TAliveObjectPtr player;
 };
 
 }
