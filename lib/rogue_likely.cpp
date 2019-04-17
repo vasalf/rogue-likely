@@ -31,6 +31,8 @@ int RunMain(int argc, char* argv[]) {
     CLI::App app;
     app.add_option("-m,--load-map", mapFilename, "Load map from file");
     app.add_option("-l,--levels", opts.Levels, "Number of levels in the game");
+    app.add_option("-h,--height", opts.Height, "Height of each level");
+    app.add_option("-w,--width", opts.Width, "Width of each level");
     CLI11_PARSE(app, argc, argv);
 
     if (!mapFilename.empty()) {
