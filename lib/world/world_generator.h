@@ -58,4 +58,16 @@ private:
     std::string Filename_;
 };
 
+class TRoomedWorldGenerator : public IWorldGenerator {
+public:
+    TRoomedWorldGenerator(int levels, int height, int width);
+
+    virtual TWorld Generate() override;
+
+private:
+    int Levels_;
+    int Height_;
+    int Width_;
+};
+
 }

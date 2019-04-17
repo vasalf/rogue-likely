@@ -16,6 +16,8 @@
 
 #include <world/position.h>
 
+#include <tuple>
+
 namespace NRogueLikely {
 
 TPosition::TPosition(int level, int i, int j)
@@ -24,5 +26,12 @@ TPosition::TPosition(int level, int i, int j)
     , J(j)
 { }
 
+bool operator<(const TPosition& a, const TPosition& b) {
+    return std::make_tuple(a.Level, a.I, a.J) < std::make_tuple(b.Level, b.I, b.J);
+}
+
+bool operator!=(const TPosition& a, const TPosition& b) {
+    return std::make_tuple(a.Level, a.I, a.J) != std::make_tuple(b.Level, b.I, b.J);
+}
 
 }

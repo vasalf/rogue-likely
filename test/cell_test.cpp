@@ -43,3 +43,31 @@ TEST(CellTest, TestWallCellFloorType) {
 TEST(CellTest, TestFloorCellFloorType) {
     DoTestCellType(ECellFloor::FLOOR);
 }
+
+TEST(CellTest, TestLadderUpCellFloorType) {
+    DoTestCellType(ECellFloor::LADDER_UP);
+}
+
+TEST(CellTest, TestLadderDownCellFloorType) {
+    DoTestCellType(ECellFloor::LADDER_DOWN);
+}
+
+TEST(CellTest, TestLadderDownMoveDown) {
+    TCellPtr ladderDown = MakeCell(ECellFloor::LADDER_DOWN);
+    ASSERT_TRUE(ladderDown->CanMoveFromHere(TPosition(0, 1, 3), TPosition(1, 1, 3)));
+}
+
+TEST(CellTest, TestLadderDownMoveUp) {
+    TCellPtr ladderDown = MakeCell(ECellFloor::LADDER_DOWN);
+    ASSERT_FALSE(ladderDown->CanMoveFromHere(TPosition(1, 1, 3), TPosition(0, 1, 3)));
+}
+
+TEST(CellTest, TestLadderUpMoveDown) {
+    TCellPtr ladderUp = MakeCell(ECellFloor::LADDER_UP);
+    ASSERT_FALSE(ladderUp->CanMoveFromHere(TPosition(0, 1, 3), TPosition(1, 1, 3)));
+}
+
+TEST(CellTest, TestLadderUpMoveUp) {
+    TCellPtr ladderUp = MakeCell(ECellFloor::LADDER_UP);
+    ASSERT_TRUE(ladderUp->CanMoveFromHere(TPosition(1, 1, 3), TPosition(0, 1, 3)));
+}

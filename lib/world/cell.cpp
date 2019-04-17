@@ -116,7 +116,7 @@ public:
         if (here.Level == where.Level) {
             return true;
         }
-        return here.Level == where.Level + (LadderType_ == ELadderType::UP ? -1 : 1)
+        return here.Level == where.Level + (LadderType_ == ELadderType::UP ? 1 : -1)
                && here.I == where.I
                && here.J == where.J;
     }

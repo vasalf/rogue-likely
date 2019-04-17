@@ -47,11 +47,11 @@ void TWorld::SetCell(const TPosition& position, TCellPtr cellPtr) {
     SetCell(position.Level, position.I, position.J, std::move(cellPtr));
 }
 
-TCellPtr TWorld::GetCell(int level, int i, int j) {
+TCellPtr TWorld::GetCell(int level, int i, int j) const {
     return World_[level][i][j];
 }
 
-TCellPtr TWorld::GetCell(const TPosition& position) {
+TCellPtr TWorld::GetCell(const TPosition& position) const {
     return GetCell(position.Level, position.I, position.J);
 }
 

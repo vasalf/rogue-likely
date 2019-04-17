@@ -27,4 +27,7 @@ struct TPosition {
     TPosition(int level, int i, int j);
 };
 
+bool operator<(const TPosition& a, const TPosition& b);
+bool operator!=(const TPosition& a, const TPosition& b);
+
 }

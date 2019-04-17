@@ -109,9 +109,9 @@ private:
             case ECellFloor::PASSAGE:
                 return '.';
             case ECellFloor::LADDER_UP:
-                return '>';
-            case ECellFloor::LADDER_DOWN:
                 return '<';
+            case ECellFloor::LADDER_DOWN:
+                return '>';
         }
     }
 

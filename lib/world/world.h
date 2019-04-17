@@ -38,8 +38,8 @@ public:
     void SetCell(int level, int i, int j, TCellPtr cellPtr);
     void SetCell(const TPosition& position, TCellPtr cellPtr);
 
-    TCellPtr GetCell(int level, int i, int j);
-    TCellPtr GetCell(const TPosition& position);
+    TCellPtr GetCell(int level, int i, int j) const;
+    TCellPtr GetCell(const TPosition& position) const;
 
     int GetLevelsCount() const;
     int GetLevelHeight() const;

@@ -31,6 +31,7 @@ struct TGameOpts {
     int Height = 0;
     int Width = 0;
     std::optional<std::string> MapLoadPath;
+    std::string LevelGenerationStrategy;
 };
 
 class TController {

@@ -25,8 +25,12 @@ TWorld GenerateWorld(const TGameOpts& opts) {
     TWorldGeneratorPtr generatorPtr;
     if (opts.MapLoadPath.has_value()) {
         generatorPtr = std::make_shared<TLoadWorldGenerator>(opts.MapLoadPath.value());
-    } else {
+    } else if (opts.LevelGenerationStrategy == "plain") {
         generatorPtr = std::make_shared<TPlainWorldGenerator>(opts.Levels, opts.Height, opts.Width);
+    } else if (opts.LevelGenerationStrategy == "roomed"){
+        generatorPtr = std::make_shared<TRoomedWorldGenerator>(opts.Levels, opts.Height, opts.Width);
+    } else {
+        throw std::runtime_error("Unknown strategy: " + opts.LevelGenerationStrategy);
     }
     return generatorPtr->Generate();
 }

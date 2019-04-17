@@ -23,16 +23,18 @@ namespace NRogueLikely {
 
 int RunMain(int argc, char* argv[]) {
     TGameOpts opts;
-    opts.Levels = 3;
-    opts.Height = 10;
-    opts.Width = 10;
+    opts.Levels = 10;
+    opts.Height = 50;
+    opts.Width = 80;
+    opts.LevelGenerationStrategy = "roomed";
 
     std::string mapFilename;
     CLI::App app;
     app.add_option("-m,--load-map", mapFilename, "Load map from file");
-    app.add_option("-l,--levels", opts.Levels, "Number of levels in the game");
-    app.add_option("-h,--height", opts.Height, "Height of each level");
-    app.add_option("-w,--width", opts.Width, "Width of each level");
+    app.add_option("-L,--levels", opts.Levels, "Number of levels in the game");
+    app.add_option("-H,--height", opts.Height, "Height of each level");
+    app.add_option("-W,--width", opts.Width, "Width of each level");
+    app.add_option("-s,--generation-strategy", opts.LevelGenerationStrategy, "Algorithm to generate the world");
     CLI11_PARSE(app, argc, argv);
 
     if (!mapFilename.empty()) {
