@@ -1,0 +1,73 @@
+/**
+ * Copyright 2019 Grigory Bartosh, Pavel Solikov, Vasily Alferov
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+#include <gtest/gtest.h>
+
+#include <world/cell.h>
+
+using namespace NRogueLikely;
+
+namespace {
+
+void DoTestCellType(ECellFloor cellFloor) {
+    ASSERT_EQ(cellFloor, MakeCell(cellFloor)->GetFloorType());
+}
+
+} // namespace <anonymous>
+
+TEST(CellTest, TestEmptyCellFloorType) {
+    DoTestCellType(ECellFloor::EMPTY);
+}
+
+TEST(CellTest, TestPassageCellFloorType) {
+    DoTestCellType(ECellFloor::PASSAGE);
+}
+
+TEST(CellTest, TestWallCellFloorType) {
+    DoTestCellType(ECellFloor::WALL);
+}
+
+TEST(CellTest, TestFloorCellFloorType) {
+    DoTestCellType(ECellFloor::FLOOR);
+}
+
+TEST(CellTest, TestLadderUpCellFloorType) {
+    DoTestCellType(ECellFloor::LADDER_UP);
+}
+
+TEST(CellTest, TestLadderDownCellFloorType) {
+    DoTestCellType(ECellFloor::LADDER_DOWN);
+}
+
+TEST(CellTest, TestLadderDownMoveDown) {
+    TCellPtr ladderDown = MakeCell(ECellFloor::LADDER_DOWN);
+    ASSERT_TRUE(ladderDown->CanMoveFromHere(TPosition(0, 1, 3), TPosition(1, 1, 3)));
+}
+
+TEST(CellTest, TestLadderDownMoveUp) {
+    TCellPtr ladderDown = MakeCell(ECellFloor::LADDER_DOWN);
+    ASSERT_FALSE(ladderDown->CanMoveFromHere(TPosition(1, 1, 3), TPosition(0, 1, 3)));
+}
+
+TEST(CellTest, TestLadderUpMoveDown) {
+    TCellPtr ladderUp = MakeCell(ECellFloor::LADDER_UP);
+    ASSERT_FALSE(ladderUp->CanMoveFromHere(TPosition(0, 1, 3), TPosition(1, 1, 3)));
+}
+
+TEST(CellTest, TestLadderUpMoveUp) {
+    TCellPtr ladderUp = MakeCell(ECellFloor::LADDER_UP);
+    ASSERT_TRUE(ladderUp->CanMoveFromHere(TPosition(1, 1, 3), TPosition(0, 1, 3)));
+}
